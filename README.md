@@ -24,6 +24,14 @@ pip install git+https://github.com/neuro-stivenr/fernet-freewater
 
 # running the fernet command once installed
 fernet -h
+
+# minimal commandline arguments
+# assumes that sub-TEST_dwi.bval and sub-TEST_dwi.bvec exist
+fernet \
+  -d sub-TEST_dwi.nii.gz \ # diffusion weighted image with B0 as the first volume
+  -m sub-TEST_brainmask.nii.gz \ # binary image delineating the boundaries of the brain
+  -o sub-TEST \ # prefix to use for the output images
+  -n 300 # max number of iterations to run (terminates automatically on condition described above)
 ```
 
 For further detail please refer back to the original package linked to above.
