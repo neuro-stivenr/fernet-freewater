@@ -5,8 +5,8 @@ import pickle
 import numpy as np
 import nibabel as nib
 import argparse
-from fernet.pipeline import estimate_tensor, calculate_scalars, tissue_rois, initial_fit, gradient_descent
-from fernet.utils import nifti_image, read_dwi
+from .pipeline import estimate_tensor, calculate_scalars, tissue_rois, initial_fit, gradient_descent
+from .utils import nifti_image, read_dwi
 
 DESCRIPTION = '''
 FERNET : FreewatER iNvariant Estimation of Tensor
@@ -99,11 +99,11 @@ def run_fernet(dwis_filename, bvals_filename, bvecs_filename, mask_filename, out
     print(" - Read DWIs from disk...")
     dwis_img, bvals, bvecs = read_dwi(dwis_filename, bvals_filename, bvecs_filename)
     affine = dwis_img.affine
-    dwis = dwis_img.get_data()
+    dwis = dwis_img.get_fdata()
 
     print(" - Read mask image from disk...")
     mask_img = nib.load(mask_filename)
-    mask = np.asarray(mask_img.get_data(), dtype=bool)
+    mask = np.asarray(mask_img.get_fdata(), dtype=bool)
     dwis[np.logical_not(mask),...] = 0 
     
     output_dir = os.path.dirname(output_basename)
@@ -120,13 +120,13 @@ def run_fernet(dwis_filename, bvals_filename, bvecs_filename, mask_filename, out
 
     if (wm_roi is not None) and (csf_roi is not None):
         print(" - Read ROIS corresponding to free water (CSF) and WM")
-        csf_roi = np.asarray(nib.load(csf_roi).get_data(), dtype=bool)
-        wm_roi = np.asarray(nib.load(wm_roi).get_data(), dtype=bool)    
+        csf_roi = np.asarray(nib.load(csf_roi).get_fdata(), dtype=bool)
+        wm_roi = np.asarray(nib.load(wm_roi).get_fdata(), dtype=bool)    
     else:
         print(" - Need CSF and WM rois.")
         if exclude_mask:
             print(" - Exclude voxels in exclude mask .")
-            exclude_mask = np.asarray(nib.load(exclude_mask).get_data(), dtype=bool)
+            exclude_mask = np.asarray(nib.load(exclude_mask).get_fdata(), dtype=bool)
         wm_roi, csf_roi = tissue_rois(mask, FA, TR, 
             erode_iterations=erode_iterations, fa_threshold=fa_threshold, 
             tr_threshold=tr_threshold, exclude=exclude_mask)

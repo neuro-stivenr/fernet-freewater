@@ -1,3 +1,6 @@
 numpy
 nibabel
 dipy
+nilearn
+matplotlib
+antspyx
