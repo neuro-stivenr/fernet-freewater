@@ -3,6 +3,9 @@
 Note, this is not an original work, but rather a repackaging of the following repository:
 [Fernet Freewater Estimation](https://github.com/DiCIPHR-Lab/Fernet)
 
+Used in the following publication. Link:
+https://doi.org/10.1093/brain/awad420
+
 Reason for the repackaging instead of branching is that there were gigabytes of commits on the
 original repository that we didn't want to bring along, this one includes only the files necessary
 to get the program running.
